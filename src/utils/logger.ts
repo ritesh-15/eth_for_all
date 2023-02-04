@@ -1,4 +1,3 @@
-import path from "path"
 import winston, { createLogger, format, transports } from "winston"
 const { combine, timestamp, label, printf } = format
 
