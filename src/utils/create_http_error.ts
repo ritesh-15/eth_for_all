@@ -39,7 +39,7 @@ class CreateHttpError {
     return new CreateHttpError(501, message, "Not implemented!")
   }
 
-  static unprocessableEntity(message: string = "Unprocessable entity!") {
+  static unprocessableEntity(message: any = "Unprocessable entity!") {
     return new CreateHttpError(422, message, "Unprocessable entity!")
   }
 }

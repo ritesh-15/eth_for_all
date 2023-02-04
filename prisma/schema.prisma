@@ -8,13 +8,27 @@ datasource db {
 }
 
 model User {
-  id         String  @id @default(uuid())
-  name       String
-  email      String  @unique
-  phone      BigInt  @unique
-  isVerified Boolean @default(false)
-  createdAt  String
-  updatedAt  String
+  id         String    @id @default(uuid())
+  name       String?
+  email      String    @unique
+  phone      BigInt    @unique
+  password   String?
+  avatar     String?
+  isVerified Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  sessions   Session[]
 
   @@index([email, phone])
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([token, userId])
 }

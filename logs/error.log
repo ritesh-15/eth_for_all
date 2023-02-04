@@ -1,0 +1,87 @@
+{
+  status: 501,
+  message: 'The route your looking for is not implemented!',
+  error: 'Not implemented!',
+  level: '\x1B[31merror\x1B[39m',
+  timestamp: '2023:02:04 05:28:49'
+}
+{
+  status: 422,
+  message: 'Unprocessable entity!',
+  error: 'Unprocessable entity!',
+  level: '\x1B[31merror\x1B[39m',
+  timestamp: '2023:02:04 05:49:17'
+}
+{
+  status: 422,
+  message: 'Unprocessable entity!',
+  error: 'Unprocessable entity!',
+  level: '\x1B[31merror\x1B[39m',
+  timestamp: '2023:02:04 05:50:23'
+}
+{
+  status: 422,
+  message: 'Unprocessable entity!',
+  error: 'Unprocessable entity!',
+  level: '\x1B[31merror\x1B[39m',
+  timestamp: '2023:02:04 05:50:38'
+}
+{
+  status: 422,
+  message: 'Unprocessable entity!',
+  error: 'Unprocessable entity!',
+  level: '\x1B[31merror\x1B[39m',
+  timestamp: '2023:02:04 05:50:47'
+}
+{
+  status: 422,
+  message: 'Unprocessable entity!',
+  error: 'Unprocessable entity!',
+  level: '\x1B[31merror\x1B[39m',
+  timestamp: '2023:02:04 05:50:58'
+}
+{
+  status: 422,
+  message: [
+    {
+      code: 'too_big',
+      maximum: 10,
+      type: 'number',
+      inclusive: true,
+      exact: false,
+      message: 'Number must be less than or equal to 10',
+      path: [ 'phone' ]
+    }
+  ],
+  error: 'Unprocessable entity!',
+  level: '\x1B[31merror\x1B[39m',
+  timestamp: '2023:02:04 05:51:58'
+}
+{
+  status: 422,
+  message: [ { message: 'Number must be less than or equal to 10' } ],
+  error: 'Unprocessable entity!',
+  level: '\x1B[31merror\x1B[39m',
+  timestamp: '2023:02:04 05:56:46'
+}
+{
+  status: 422,
+  message: [ { message: 'Expected string, received number' } ],
+  error: 'Unprocessable entity!',
+  level: '\x1B[31merror\x1B[39m',
+  timestamp: '2023:02:04 05:58:03'
+}
+{
+  status: 422,
+  message: [ { message: 'Phone number is required!' } ],
+  error: 'Unprocessable entity!',
+  level: '\x1B[31merror\x1B[39m',
+  timestamp: '2023:02:04 05:58:53'
+}
+{
+  status: 422,
+  message: [ { message: 'Email address is required!' } ],
+  error: 'Unprocessable entity!',
+  level: '\x1B[31merror\x1B[39m',
+  timestamp: '2023:02:04 07:43:49'
+}
