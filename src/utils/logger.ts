@@ -8,10 +8,6 @@ const myFormat = printf(({ level, message, timestamp }) => {
 
 let logger: winston.Logger
 
-const errorLog = path.resolve("logs/error.log")
-const infoLog = path.resolve("logs/info.log")
-const debugLog = path.resolve("logs/debug.log")
-
 if (process.env.NODE_ENV === "production") {
   logger = createLogger({
     level: "debug",
@@ -20,17 +16,17 @@ if (process.env.NODE_ENV === "production") {
       new transports.Console(),
       new transports.File({
         level: "error",
-        filename: errorLog,
+
         format: format.prettyPrint(),
       }),
       new transports.File({
         level: "info",
-        filename: infoLog,
+
         format: format.prettyPrint(),
       }),
       new transports.File({
         level: "debug",
-        filename: debugLog,
+
         format: format.prettyPrint(),
       }),
     ],
@@ -47,17 +43,14 @@ if (process.env.NODE_ENV === "production") {
       new transports.Console(),
       new transports.File({
         level: "error",
-        filename: errorLog,
         format: format.prettyPrint(),
       }),
       new transports.File({
         level: "info",
-        filename: infoLog,
         format: format.prettyPrint(),
       }),
       new transports.File({
         level: "debug",
-        filename: debugLog,
         format: format.prettyPrint(),
       }),
     ],
