@@ -12,24 +12,7 @@ if (process.env.NODE_ENV === "production") {
   logger = createLogger({
     level: "debug",
     format: combine(timestamp(), myFormat),
-    transports: [
-      new transports.Console(),
-      new transports.File({
-        level: "error",
-
-        format: format.prettyPrint(),
-      }),
-      new transports.File({
-        level: "info",
-
-        format: format.prettyPrint(),
-      }),
-      new transports.File({
-        level: "debug",
-
-        format: format.prettyPrint(),
-      }),
-    ],
+    transports: [new transports.Console()],
   })
 } else {
   logger = createLogger({
@@ -39,21 +22,7 @@ if (process.env.NODE_ENV === "production") {
       timestamp({ format: "YYYY:MM:DD hh:mm:ss" }),
       myFormat
     ),
-    transports: [
-      new transports.Console(),
-      new transports.File({
-        level: "error",
-        format: format.prettyPrint(),
-      }),
-      new transports.File({
-        level: "info",
-        format: format.prettyPrint(),
-      }),
-      new transports.File({
-        level: "debug",
-        format: format.prettyPrint(),
-      }),
-    ],
+    transports: [new transports.Console()],
   })
 }
 
