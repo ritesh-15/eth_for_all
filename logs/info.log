@@ -3,3 +3,33 @@
   level: '\x1B[32minfo\x1B[39m',
   timestamp: '2023:02:04 04:35:03'
 }
+{
+  message: 'Listening on port 9000 🚀🚀',
+  level: '\x1B[32minfo\x1B[39m',
+  timestamp: '2023:02:04 04:36:56'
+}
+{
+  message: 'Listening on port 9000 🚀🚀',
+  level: '\x1B[32minfo\x1B[39m',
+  timestamp: '2023:02:04 04:37:00'
+}
+{
+  message: 'Listening on port 9000 🚀🚀',
+  level: '\x1B[32minfo\x1B[39m',
+  timestamp: '2023:02:04 04:37:32'
+}
+{
+  message: 'Listening on port 9000 🚀🚀',
+  level: '\x1B[32minfo\x1B[39m',
+  timestamp: '2023:02:04 05:10:24'
+}
+{
+  message: 'Listening on port 9000 🚀🚀',
+  level: '\x1B[32minfo\x1B[39m',
+  timestamp: '2023:02:04 05:10:42'
+}
+{
+  message: 'Listening on port 9000 🚀🚀',
+  level: '\x1B[32minfo\x1B[39m',
+  timestamp: '2023:02:04 05:10:47'
+}

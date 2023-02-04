@@ -5,6 +5,7 @@ import helmet from "helmet"
 import morgan from "morgan"
 import CreateHttpError from "./create_http_error"
 import { errorHandler } from "../middlewares"
+import rateLimiter from "./rate_limiter"
 
 export default function initServer(app: Application) {
   app.use(json())
@@ -21,6 +22,8 @@ export default function initServer(app: Application) {
   app.use(helmet())
 
   app.use(morgan("dev"))
+
+  app.use(rateLimiter)
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     next(
