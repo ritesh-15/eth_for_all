@@ -12,9 +12,15 @@ function formateZodError(error: z.ZodError<any>) {
 
 export default function validateData(schema: z.AnyZodObject) {
   return async (req: Request, Res: Response, next: NextFunction) => {
-    const body = req.body
-    const parsed = await schema.safeParseAsync(body)
-    if (parsed.success) return next()
-    next(CreateHttpError.unprocessableEntity(formateZodError(parsed.error)))
+    try {
+      await schema.parseAsync({
+        body: req.body,
+        query: req.query,
+        params: req.params,
+      })
+      next()
+    } catch (e: any) {
+      next(CreateHttpError.unprocessableEntity(formateZodError(e)))
+    }
   }
 }

@@ -6,9 +6,29 @@ export interface ICreateSession {
 }
 
 class SessionService {
-  create(data: ICreateSession) {
+  static create(data: ICreateSession) {
     return Prisma.get().session.create({
       data,
+    })
+  }
+
+  static deleteByID(id: string) {
+    return Prisma.get().session.delete({
+      where: { id },
+    })
+  }
+
+  static deleteManyByUserID(userId: string) {
+    return Prisma.get().session.deleteMany({
+      where: { userId },
+    })
+  }
+
+  static findByToken(token: string) {
+    return Prisma.get().session.findUnique({
+      where: {
+        token,
+      },
     })
   }
 }

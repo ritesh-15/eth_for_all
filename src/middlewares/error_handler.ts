@@ -12,7 +12,7 @@ export default function errorHandler(
 
   if (error instanceof CreateHttpError) {
     return res.status(error.status).json({
-      success: false,
+      ok: false,
       message: error.message,
       code: error.status,
       error: error.error,
@@ -20,7 +20,7 @@ export default function errorHandler(
   }
 
   return res.status(500).json({
-    success: false,
+    ok: false,
     message: "Something went wrong at our side, please try again later!",
     code: 500,
     error: "Internal server error!",

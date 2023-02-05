@@ -1,5 +1,6 @@
 import express, { Application } from "express"
 import Prisma from "./helper/prisma_client"
+import Redis from "./helper/redis_client"
 import initServer from "./utils/init_server"
 import logger from "./utils/logger"
 
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 9000
 app.listen(PORT, async () => {
   try {
     await Prisma.get().$connect()
+    await Redis.get().connect()
     logger.info(`Listening on port ${PORT} 🚀🚀`)
     logger.info("Database connected successfully! ✅✅")
   } catch (error) {
