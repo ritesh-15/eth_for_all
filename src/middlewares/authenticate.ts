@@ -10,13 +10,8 @@ export default async function authenticate(
 ) {
   try {
     let token = req.headers["authorization"]
-    const { refreshtoken } = req.headers
 
     if (!token) throw new Error("Token not found!")
-
-    const session = await SessionService.findByToken(refreshtoken as string)
-
-    if (!session) throw new Error("Session not found")
 
     token = token.split(" ")[1]
     const payload = verifyAccessToken(token)

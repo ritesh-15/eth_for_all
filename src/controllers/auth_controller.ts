@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { SessionService, UserService } from "../services"
 import CreateHttpError from "../utils/create_http_error"
 import {
+  IConnectWallet,
   ICreateAccount,
   ILogin,
   ISendOTP,
@@ -14,6 +15,84 @@ import OtpHelper from "../helper/otp_helper"
 import verficationCodeQueue from "../tasks/send_verification_code"
 
 class AuthController {
+  /**
+   * @route POST auth/connect-wallet
+   * @desc Sign up by wallet address
+   * @access Public
+   */
+  static async connectWallet(
+    req: Request<{}, {}, IConnectWallet["body"]>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { address } = req.body
+      const foundUser = await UserService.findByWalletAddress(address)
+
+      if (foundUser)
+        return next(
+          CreateHttpError.badRequest(
+            "User already exists with same wallet address!"
+          )
+        )
+
+      const user = await UserService.createByWallet(address)
+
+      const { accessToken, refreshToken } = signTokens(user.id)
+
+      await SessionService.create({ token: refreshToken, userId: user.id })
+
+      res.json({
+        ok: true,
+        user: new UserDTO(user),
+        tokens: {
+          accessToken,
+          refreshToken,
+        },
+      })
+    } catch (err) {
+      next(CreateHttpError.internalServerError())
+    }
+  }
+
+  /**
+   * @route POST auth/wallet-signin
+   * @desc Login by wallet address
+   * @access Public
+   */
+  static async walletSignIn(
+    req: Request<{}, {}, IConnectWallet["body"]>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { address } = req.body
+      const user = await UserService.findByWalletAddress(address)
+
+      if (!user)
+        return next(
+          CreateHttpError.badRequest(
+            "User not found with given wallet address!"
+          )
+        )
+
+      const { accessToken, refreshToken } = signTokens(user.id)
+
+      await SessionService.create({ token: refreshToken, userId: user.id })
+
+      res.json({
+        ok: true,
+        user: new UserDTO(user),
+        tokens: {
+          accessToken,
+          refreshToken,
+        },
+      })
+    } catch (err) {
+      next(CreateHttpError.internalServerError())
+    }
+  }
+
   /**
    * @route POST auth/login
    * @desc Login to the account
@@ -248,7 +327,7 @@ class AuthController {
         )
       )
 
-    const user = await UserService.create(Number(phone), email)
+    const user = await UserService.createByPhoneAndEmail(Number(phone), email)
 
     // send otp in the background
     const otp = new OtpHelper({ email })

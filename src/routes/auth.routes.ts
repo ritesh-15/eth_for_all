@@ -2,6 +2,7 @@ import { Router } from "express"
 import { AuthController } from "../controllers"
 import { authenticate, validateData } from "../middlewares"
 import {
+  ConnectWalletSchema,
   CreateAccountSchema,
   LoginSchema,
   SendOTPSchema,
@@ -19,6 +20,14 @@ router.route("/login").post(validateData(LoginSchema), AuthController.login)
 router
   .route("/verify-otp")
   .post(validateData(VerifyOTPSchema), AuthController.verifyOtp)
+
+router
+  .route("/connect-wallet")
+  .post(validateData(ConnectWalletSchema), AuthController.connectWallet)
+
+router
+  .route("/wallet-signin")
+  .post(validateData(ConnectWalletSchema), AuthController.walletSignIn)
 
 router
   .route("/send-otp")

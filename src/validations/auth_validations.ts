@@ -66,3 +66,12 @@ export const VerifyOTPSchema = z.object({
 })
 
 export type IVerifyOTP = z.infer<typeof VerifyOTPSchema>
+
+// Connect wallet schema
+export const ConnectWalletSchema = z.object({
+  body: z.object({
+    address: z.string({ required_error: "Wallet address required!" }),
+  }),
+})
+
+export type IConnectWallet = z.infer<typeof ConnectWalletSchema>
