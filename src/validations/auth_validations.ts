@@ -24,8 +24,7 @@ export const LoginSchema = z.object({
         required_error: "Phone number is required!",
       })
       .length(10)
-      .optional()
-      .default(""),
+      .optional(),
     email: z
       .string({ required_error: "Email address is required!" })
       .email("Invalid email address please provide a valid email address!")

@@ -12,7 +12,7 @@ export function signTokens(userId: string) {
     },
     ACCESS_TOKEN_SECRET,
     {
-      expiresIn: "15m",
+      expiresIn: "15d", // TODO: change it in production
     }
   )
 

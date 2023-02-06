@@ -6,7 +6,7 @@ import morgan from "morgan"
 import CreateHttpError from "./create_http_error"
 import { errorHandler } from "../middlewares"
 import rateLimiter from "./rate_limiter"
-import { autheRouter } from "../routes"
+import { autheRouter, userRouter } from "../routes"
 
 export default function initServer(app: Application) {
   app.use(json())
@@ -27,6 +27,7 @@ export default function initServer(app: Application) {
   app.use(rateLimiter)
 
   app.use("/api/v1/auth", autheRouter)
+  app.use("/api/v1/user", userRouter)
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     next(

@@ -40,7 +40,10 @@ class AuthController {
 
       const { accessToken, refreshToken } = signTokens(user.id)
 
-      await SessionService.create({ token: refreshToken, userId: user.id })
+      await Promise.all([
+        SessionService.create({ token: refreshToken, userId: user.id }),
+        UserService.setUser(new UserDTO(user)),
+      ])
 
       res.json({
         ok: true,
@@ -78,7 +81,10 @@ class AuthController {
 
       const { accessToken, refreshToken } = signTokens(user.id)
 
-      await SessionService.create({ token: refreshToken, userId: user.id })
+      await Promise.all([
+        SessionService.create({ token: refreshToken, userId: user.id }),
+        UserService.setUser(new UserDTO(user)),
+      ])
 
       res.json({
         ok: true,
@@ -112,7 +118,7 @@ class AuthController {
         )
 
       const user = await UserService.findUserByPhoneOREmail(
-        (phone && Number(phone)) || 0,
+        phone || "",
         email || ""
       )
 
@@ -133,7 +139,10 @@ class AuthController {
 
       const { accessToken, refreshToken } = signTokens(user.id)
 
-      await SessionService.create({ token: refreshToken, userId: user.id })
+      await Promise.all([
+        SessionService.create({ token: refreshToken, userId: user.id }),
+        UserService.setUser(new UserDTO(user)),
+      ])
 
       return res.json({
         ok: true,
@@ -206,7 +215,10 @@ class AuthController {
 
       const { accessToken, refreshToken } = signTokens(user.id)
 
-      await SessionService.create({ token: refreshToken, userId: user.id })
+      await Promise.all([
+        SessionService.create({ token: refreshToken, userId: user.id }),
+        UserService.setUser(new UserDTO(user)),
+      ])
 
       res.json({
         ok: true,
@@ -242,7 +254,7 @@ class AuthController {
         return next(CreateHttpError.forbidden())
       }
 
-      const user = await UserService.findByID(session.userId)
+      const user = await UserService.getUser(session.userId)
 
       if (!user) return next(CreateHttpError.notFound("User not found!"))
 
@@ -315,10 +327,7 @@ class AuthController {
   ) {
     const { phone, email } = req.body
 
-    const foundUser = await UserService.findUserByPhoneOREmail(
-      Number(phone),
-      email
-    )
+    const foundUser = await UserService.findUserByPhoneOREmail(phone, email)
 
     if (foundUser)
       return next(
@@ -327,7 +336,7 @@ class AuthController {
         )
       )
 
-    const user = await UserService.createByPhoneAndEmail(Number(phone), email)
+    const user = await UserService.createByPhoneAndEmail(phone, email)
 
     // send otp in the background
     const otp = new OtpHelper({ email })

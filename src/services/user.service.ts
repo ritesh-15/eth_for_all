@@ -1,14 +1,30 @@
+import UserDTO from "../dtos/UserDTO"
 import Prisma from "../helper/prisma_client"
+import Redis from "../helper/redis_client"
 
 export interface IUpdateUser {
   isVerified?: boolean
   name?: string
   avatar?: string
   password?: string
+  email?: string
+  phone?: string
 }
 
 class UserService {
-  static findUserByPhoneOREmail(phone: number, email: string) {
+  static USER_KEY = "USER"
+
+  static setUser(user: UserDTO) {
+    return Redis.get().set(`${this.USER_KEY}-${user.id}`, JSON.stringify(user))
+  }
+
+  static async getUser(userId: string): Promise<UserDTO | null> {
+    const user = await Redis.get().get(`${this.USER_KEY}-${userId}`)
+    if (!user) return null
+    return JSON.parse(user)
+  }
+
+  static findUserByPhoneOREmail(phone: string, email: string) {
     return Prisma.get().user.findFirst({
       where: {
         OR: [{ phone }, { email }],
@@ -57,7 +73,7 @@ class UserService {
     })
   }
 
-  static createByPhoneAndEmail(phone: number, email: string) {
+  static createByPhoneAndEmail(phone: string, email: string) {
     return Prisma.get().user.create({
       data: {
         phone,
