@@ -39,3 +39,11 @@ model Session {
 
   @@index([token, userId])
 }
+
+model Movie {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
