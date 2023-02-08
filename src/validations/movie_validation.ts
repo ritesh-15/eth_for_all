@@ -19,3 +19,12 @@ export const AddMovieSchema = z.object({
 })
 
 export type IAddMovieSchema = z.infer<typeof AddMovieSchema>
+
+// get all movies
+export const GetAllMoviesSchema = z.object({
+  query: z.object({
+    name: z.string().optional(),
+  }),
+})
+
+export type IGetAllMoviesSchema = z.infer<typeof GetAllMoviesSchema>

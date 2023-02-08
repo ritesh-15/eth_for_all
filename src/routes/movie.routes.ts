@@ -12,5 +12,6 @@ router
     [authenticate, admin, validateData(AddMovieSchema)],
     MovieController.addNewMovie
   )
+  .get(MovieController.getMovies)
 
 export default router
