@@ -1,4 +1,5 @@
 import UserService from "./user.service"
 import SessionService from "./session.service"
+import MovieService from "./movie.service"
 
-export { UserService, SessionService }
+export { UserService, SessionService, MovieService }

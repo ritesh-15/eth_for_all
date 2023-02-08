@@ -24,6 +24,10 @@ class UserService {
     return JSON.parse(user)
   }
 
+  static async deleteUser(userId: string) {
+    await Redis.get().del(`${this.USER_KEY}-${userId}`)
+  }
+
   static findUserByPhoneOREmail(phone: string, email: string) {
     return Prisma.get().user.findFirst({
       where: {

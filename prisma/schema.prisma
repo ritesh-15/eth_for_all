@@ -42,16 +42,16 @@ model Session {
 }
 
 model Movie {
-  id           String   @id @default(uuid())
-  name         String
-  description  String
-  duration     DateTime
-  language     String
-  realeaseDate DateTime
-  genere       String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  shows        Show[]
+  id          String   @id @default(uuid())
+  name        String
+  description Bytes
+  duration    DateTime
+  language    String
+  releaseDate DateTime
+  genere      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  shows       Show[]
 }
 
 model Show {

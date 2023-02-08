@@ -37,6 +37,8 @@ class UserController {
   ) {
     try {
       const user = await UserService.updateByID(req.user.id, req.body)
+      await UserService.setUser(new UserDTO(user))
+
       res.json({
         ok: true,
         user: new UserDTO(user),

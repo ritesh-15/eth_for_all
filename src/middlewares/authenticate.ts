@@ -22,7 +22,6 @@ export default async function authenticate(
     req.user = user
     next()
   } catch (e) {
-    console.log(e)
     next(CreateHttpError.unauthorized())
   }
 }
