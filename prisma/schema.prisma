@@ -25,6 +25,7 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
+  bookings      Booking[]
 
   @@index([email, phone])
 }
@@ -41,9 +42,93 @@ model Session {
 }
 
 model Movie {
-  id          String   @id @default(uuid())
+  id           String   @id @default(uuid())
+  name         String
+  description  String
+  duration     DateTime
+  language     String
+  realeaseDate DateTime
+  genere       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  shows        Show[]
+}
+
+model Show {
+  id         String      @id @default(uuid())
+  startTime  DateTime
+  endTime    DateTime
+  movieId    String
+  movie      Movie       @relation(fields: [movieId], references: [id])
+  cinemaHall CinemaHall?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  showSeats  ShowSeat[]
+  bookings   Booking[]
+}
+
+model CinemaHall {
+  id          String       @id @default(uuid())
   name        String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  totalSeats  Int
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  show        Show         @relation(fields: [showId], references: [id])
+  showId      String       @unique
+  cinemaSeats CinemaSeat[]
+}
+
+model CinemaSeat {
+  id           String     @id @default(uuid())
+  seatNumber   String     @unique
+  cinemaHallId String
+  cinemaHall   CinemaHall @relation(fields: [cinemaHallId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  showSeats    ShowSeat[]
+}
+
+enum SeatStatus {
+  BOOKED
+  FREE
+}
+
+model ShowSeat {
+  id           String     @id @default(uuid())
+  status       SeatStatus @default(FREE)
+  price        Int
+  cinemaSeatId String
+  cinemaSeat   CinemaSeat @relation(fields: [cinemaSeatId], references: [id])
+  showId       String
+  show         Show       @relation(fields: [showId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Booking {
+  id            String   @id @default(uuid())
+  numberOfSeats Int
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  showId        String
+  show          Show     @relation(fields: [showId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  payment       Payment? @relation(fields: [paymentId], references: [id])
+  paymentId     String?
+}
+
+enum PaymentMethod {
+  ONLINE
+  CRYPTO
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  amouont       Int
+  paymentMethod PaymentMethod
+  bookingId     String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  Booking       Booking[]
 }
