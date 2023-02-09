@@ -4,6 +4,7 @@ import CreateHttpError from "../utils/create_http_error"
 import {
   IAddMovieSchema,
   IGetAllMoviesSchema,
+  IUpdateMovieSchema,
 } from "../validations/movie_validation"
 
 class MovieController {
@@ -31,18 +32,12 @@ class MovieController {
   }
 
   /**
-   * @route GET movie/?name=
+   * @route GET movie/
    * @desc Get all movies
    * @access Public
    */
-  static async getMovies(
-    req: Request<{}, {}, {}, IGetAllMoviesSchema["query"]>,
-    res: Response,
-    next: NextFunction
-  ) {
+  static async getMovies(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name } = req.query
-
       let movies = await MovieService.getMovies()
 
       if (movies !== null)
@@ -51,13 +46,60 @@ class MovieController {
           movies,
         })
 
-      movies = await MovieService.findAll(name)
+      movies = await MovieService.findAll()
 
       await MovieService.setMovies(movies)
 
       res.json({
         ok: true,
         movies,
+      })
+    } catch (e) {
+      next(CreateHttpError.internalServerError())
+    }
+  }
+
+  /**
+   * @route GET movie/search
+   * @desc Serach movies
+   * @access Public
+   */
+  static async searchMovies(
+    req: Request<{}, {}, {}, IGetAllMoviesSchema["query"]>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { name } = req.query
+      const movies = await MovieService.findAll(name)
+      res.json({
+        ok: true,
+        movies,
+      })
+    } catch (e) {
+      next(CreateHttpError.internalServerError())
+    }
+  }
+
+  /**
+   * @route PUT movie/:id
+   * @desc Update movie
+   * @access Private Admin Only
+   */
+  static async updateMovie(
+    req: Request<IUpdateMovieSchema["params"], {}, IUpdateMovieSchema["body"]>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const body = req.body
+      await Promise.all([
+        MovieService.updateMovie(req.params.id, body),
+        MovieService.delMovies(),
+      ])
+      res.json({
+        ok: true,
+        message: "Movie updated successfully",
       })
     } catch (e) {
       next(CreateHttpError.internalServerError())
