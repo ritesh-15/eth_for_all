@@ -9,6 +9,8 @@ import {
 class MovieService {
   static KEY = "MOVIES"
 
+  // redis
+
   static setMovies(movies: Movie[]) {
     return Redis.get().set(`${this.KEY}`, JSON.stringify(movies))
   }
@@ -21,6 +23,21 @@ class MovieService {
     const movies = await Redis.get().get(`${this.KEY}`)
     return movies ? JSON.parse(movies) : null
   }
+
+  static setMovie(movie: Movie) {
+    return Redis.get().set(`${this.KEY}-${movie.id}`, JSON.stringify(movie))
+  }
+
+  static delMovie(id: string) {
+    return Redis.get().del(`${this.KEY}-${id}`)
+  }
+
+  static async getMovie(id: string): Promise<Movie | null> {
+    const movies = await Redis.get().get(`${this.KEY}-${id}`)
+    return movies ? JSON.parse(movies) : null
+  }
+
+  // database
 
   static create(data: IAddMovieSchema["body"]) {
     return Prisma.get().movie.create({
@@ -43,6 +60,22 @@ class MovieService {
         name: name && {
           contains: name,
         },
+      },
+    })
+  }
+
+  static findByID(id: string) {
+    return Prisma.get().movie.findUnique({
+      where: {
+        id,
+      },
+    })
+  }
+
+  static deleteByID(id: string) {
+    return Prisma.get().movie.delete({
+      where: {
+        id,
       },
     })
   }

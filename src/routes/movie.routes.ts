@@ -6,6 +6,7 @@ import {
   AddMovieSchema,
   UpdateMovieSchema,
   GetAllMoviesSchema,
+  SingleMovieSchema,
 } from "../validations/movie_validation"
 
 const router = Router()
@@ -27,6 +28,11 @@ router
   .put(
     [authenticate, admin, validateData(UpdateMovieSchema)],
     MovieController.updateMovie
+  )
+  .get([validateData(SingleMovieSchema)], MovieController.singleMovie)
+  .delete(
+    [authenticate, admin, validateData(SingleMovieSchema)],
+    MovieController.deleteMovie
   )
 
 export default router

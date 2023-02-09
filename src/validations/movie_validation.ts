@@ -57,3 +57,14 @@ export const UpdateMovieSchema = z.object({
 })
 
 export type IUpdateMovieSchema = z.infer<typeof UpdateMovieSchema>
+
+// single movie schema
+export const SingleMovieSchema = z.object({
+  params: z.object({
+    id: z
+      .string({ required_error: "Movie id is required!" })
+      .uuid("Movie id must be valid"),
+  }),
+})
+
+export type ISingleMovieSchema = z.infer<typeof SingleMovieSchema>

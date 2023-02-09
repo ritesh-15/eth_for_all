@@ -5,6 +5,7 @@ import {
   IAddMovieSchema,
   IGetAllMoviesSchema,
   IUpdateMovieSchema,
+  ISingleMovieSchema,
 } from "../validations/movie_validation"
 
 class MovieController {
@@ -96,10 +97,80 @@ class MovieController {
       await Promise.all([
         MovieService.updateMovie(req.params.id, body),
         MovieService.delMovies(),
+        MovieService.delMovie(req.params.id),
       ])
       res.json({
         ok: true,
         message: "Movie updated successfully",
+      })
+    } catch (e) {
+      next(CreateHttpError.internalServerError())
+    }
+  }
+
+  /**
+   * @route GET movie/:id
+   * @desc Get single movie
+   * @access Public
+   */
+  static async singleMovie(
+    req: Request<ISingleMovieSchema["params"]>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { id } = req.params
+      let movie = await MovieService.getMovie(id)
+
+      if (movie)
+        return res.json({
+          ok: true,
+          movie,
+        })
+
+      movie = await MovieService.findByID(id)
+
+      if (!movie)
+        return next(CreateHttpError.notFound("Movie not found with given id!"))
+
+      await MovieService.setMovie(movie)
+
+      res.json({
+        ok: true,
+        movie,
+      })
+    } catch (e) {
+      next(CreateHttpError.internalServerError())
+    }
+  }
+
+  /**
+   * @route DELETE movie/:id
+   * @desc Get single movie
+   * @access Public
+   */
+  static async deleteMovie(
+    req: Request<ISingleMovieSchema["params"]>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { id } = req.params
+
+      const movie = await MovieService.findByID(id)
+
+      if (!movie)
+        return next(CreateHttpError.notFound("Movie not found with given id!"))
+
+      await Promise.all([
+        MovieService.deleteByID(id),
+        MovieService.delMovies(),
+        MovieService.delMovie(req.params.id),
+      ])
+
+      res.json({
+        ok: true,
+        message: "Movie deleted successfully!",
       })
     } catch (e) {
       next(CreateHttpError.internalServerError())
