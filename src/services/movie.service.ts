@@ -69,6 +69,15 @@ class MovieService {
       where: {
         id,
       },
+      include: {
+        shows: {
+          select: {
+            endTime: true,
+            startTime: true,
+            id: true,
+          },
+        },
+      },
     })
   }
 

@@ -1,8 +1,9 @@
 import { Router } from "express"
+import { showRouter } from "."
 import { ShowController } from "../controllers"
 import { authenticate, validateData } from "../middlewares"
 import admin from "../middlewares/admin"
-import { NewShowSchema } from "../validations/show_validation"
+import { GetMovieShows, NewShowSchema } from "../validations/show_validation"
 
 const router = Router()
 
@@ -21,5 +22,8 @@ router
 // get show
 
 // get all shows
+router
+  .route("/:movieId")
+  .get(validateData(GetMovieShows), ShowController.getMovieShows)
 
 export default router

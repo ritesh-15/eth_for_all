@@ -22,3 +22,12 @@ export const NewShowSchema = z.object({
 })
 
 export type INewShowSchema = z.infer<typeof NewShowSchema>
+
+// get movie shows
+export const GetMovieShows = z.object({
+  params: z.object({
+    movieId: z.string({ required_error: "Movie id is required" }),
+  }),
+})
+
+export type IGetMovieShows = z.infer<typeof GetMovieShows>
