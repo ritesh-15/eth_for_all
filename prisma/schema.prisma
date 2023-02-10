@@ -36,7 +36,7 @@ model Session {
   id        String   @id @default(uuid())
   token     String   @unique
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -63,7 +63,7 @@ model Show {
   startTime  DateTime
   endTime    DateTime
   movieId    String
-  movie      Movie       @relation(fields: [movieId], references: [id])
+  movie      Movie       @relation(fields: [movieId], references: [id], onDelete: Cascade)
   cinemaHall CinemaHall?
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
@@ -79,7 +79,7 @@ model CinemaHall {
   totalSeats  Int
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  show        Show         @relation(fields: [showId], references: [id])
+  show        Show         @relation(fields: [showId], references: [id], onDelete: Cascade)
   showId      String       @unique
   cinemaSeats CinemaSeat[]
 }
@@ -88,7 +88,7 @@ model CinemaSeat {
   id           String     @id @default(uuid())
   seatNumber   String     @unique
   cinemaHallId String
-  cinemaHall   CinemaHall @relation(fields: [cinemaHallId], references: [id])
+  cinemaHall   CinemaHall @relation(fields: [cinemaHallId], references: [id], onDelete: Cascade)
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   showSeats    ShowSeat[]
@@ -106,9 +106,9 @@ model ShowSeat {
   status       SeatStatus @default(FREE)
   price        Int
   cinemaSeatId String
-  cinemaSeat   CinemaSeat @relation(fields: [cinemaSeatId], references: [id])
+  cinemaSeat   CinemaSeat @relation(fields: [cinemaSeatId], references: [id], onDelete: Cascade)
   showId       String
-  show         Show       @relation(fields: [showId], references: [id])
+  show         Show       @relation(fields: [showId], references: [id], onDelete: Cascade)
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 
@@ -120,12 +120,12 @@ model Booking {
   id            String   @id @default(uuid())
   numberOfSeats Int
   userId        String
-  user          User     @relation(fields: [userId], references: [id])
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   showId        String
-  show          Show     @relation(fields: [showId], references: [id])
+  show          Show     @relation(fields: [showId], references: [id], onDelete: Cascade)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  payment       Payment? @relation(fields: [paymentId], references: [id])
+  payment       Payment? @relation(fields: [paymentId], references: [id], onDelete: Cascade)
   paymentId     String?
 
   @@index([showId])

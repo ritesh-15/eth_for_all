@@ -3,7 +3,12 @@ import { showRouter } from "."
 import { ShowController } from "../controllers"
 import { authenticate, validateData } from "../middlewares"
 import admin from "../middlewares/admin"
-import { GetMovieShows, NewShowSchema } from "../validations/show_validation"
+import {
+  DeleteShowSchema,
+  GetMovieShows,
+  NewShowSchema,
+  UpdateShowSchema,
+} from "../validations/show_validation"
 
 const router = Router()
 
@@ -17,9 +22,16 @@ router
 
 // delete show
 
-// update show
-
-// get show
+router
+  .route("/:showId")
+  .delete(
+    [authenticate, admin, validateData(DeleteShowSchema)],
+    ShowController.deleteShow
+  )
+  .patch(
+    [authenticate, admin, validateData(UpdateShowSchema)],
+    ShowController.updateShow
+  )
 
 // get all shows
 router

@@ -31,3 +31,35 @@ export const GetMovieShows = z.object({
 })
 
 export type IGetMovieShows = z.infer<typeof GetMovieShows>
+
+// delete show
+export const DeleteShowSchema = z.object({
+  params: z.object({
+    showId: z.string({ required_error: "show id is required" }),
+  }),
+})
+
+export type IDeleteShowSchema = z.infer<typeof DeleteShowSchema>
+
+// delete show
+export const UpdateShowSchema = z.object({
+  params: z.object({
+    showId: z.string({ required_error: "show id is required" }),
+  }),
+  body: z.object({
+    startTime: z
+      .string({
+        invalid_type_error: "start time must be valid",
+      })
+      .datetime()
+      .optional(),
+    endTime: z
+      .string({
+        invalid_type_error: "End time must be valid",
+      })
+      .datetime()
+      .optional(),
+  }),
+})
+
+export type IUpdateShowSchema = z.infer<typeof UpdateShowSchema>
