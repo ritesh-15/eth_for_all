@@ -59,18 +59,20 @@ model Movie {
 }
 
 model Show {
-  id         String      @id @default(uuid())
-  startTime  DateTime
-  endTime    DateTime
-  movieId    String
-  movie      Movie       @relation(fields: [movieId], references: [id], onDelete: Cascade)
-  cinemaHall CinemaHall?
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  showSeats  ShowSeat[]
-  bookings   Booking[]
+  id           String     @id @default(uuid())
+  startTime    DateTime
+  endTime      DateTime
+  movieId      String
+  movie        Movie      @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  cinemaHallId String
+  cinemaHall   CinemaHall @relation(fields: [cinemaHallId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  showSeats    ShowSeat[]
+  bookings     Booking[]
 
   @@index([movieId])
+  @@index([cinemaHallId])
 }
 
 model CinemaHall {
@@ -79,9 +81,8 @@ model CinemaHall {
   totalSeats  Int
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  show        Show         @relation(fields: [showId], references: [id], onDelete: Cascade)
-  showId      String       @unique
   cinemaSeats CinemaSeat[]
+  shows       Show[]
 }
 
 model CinemaSeat {

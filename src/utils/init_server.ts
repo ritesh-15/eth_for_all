@@ -6,7 +6,13 @@ import morgan from "morgan"
 import CreateHttpError from "./create_http_error"
 import { errorHandler } from "../middlewares"
 import rateLimiter from "./rate_limiter"
-import { autheRouter, movieRouter, showRouter, userRouter } from "../routes"
+import {
+  autheRouter,
+  cinemaHallRouter,
+  movieRouter,
+  showRouter,
+  userRouter,
+} from "../routes"
 
 export default function initServer(app: Application) {
   app.use(json())
@@ -30,6 +36,7 @@ export default function initServer(app: Application) {
   app.use("/api/v1/user", userRouter)
   app.use("/api/v1/movie", movieRouter)
   app.use("/api/v1/show", showRouter)
+  app.use("/api/v1/cinema-hall", cinemaHallRouter)
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     next(

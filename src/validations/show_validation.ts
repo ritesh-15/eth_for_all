@@ -18,6 +18,9 @@ export const NewShowSchema = z.object({
     movieId: z
       .string({ required_error: "Movid id is required" })
       .uuid("Movie id must be valid"),
+    cinemaHallId: z
+      .string({ required_error: "Cinema hall id is required" })
+      .uuid("Cinema hall id must be valid"),
   }),
 })
 
